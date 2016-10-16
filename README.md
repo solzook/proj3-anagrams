@@ -16,7 +16,8 @@ have different anagrams.
 
 ## Authors 
 
-Initial version by M Young; to be revised by CIS 322 students. 
+Initial version by M Young;
+AJAX implementation by Solomon Zook; 
 
 ## Status
 
@@ -26,17 +27,6 @@ interaction through a form, interacting only when the user submits the form.
 Your assignment is to replace the interaction with AJAX interaction on each 
 keystroke. 
 
-## Minijax? 
+## Testing
 
-flask_minijax.py and templates/minijax.html are a tiny example of using JQuery 
-with flask for an Ajax application.  They should not be included in the
-version of the project you turn in. 
-
-
-## To run automated tests 
-* `nosetests`
-
-There are currently nose tests for vocab.py, letterbag.py, and jumble.py. 
-
-
-
+'make test' runs nosetests: tests are currently implemented for vocab.py, letterbag.py, and jumble.py
