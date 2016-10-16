@@ -36,3 +36,15 @@ def test_simple_merge():
     bag_abbc.merge(bag_abccd)
     assert bag_abbc.as_string() == "abbccd"
     
+def test_other_merge():
+    bag_abc = LetterBag("abc")
+    bag_xyz = LetterBag("xyz")
+    bag_dup = LetterBag("aazz")
+    assert bag_abc.contains("ca")
+    assert not bag_xyz.contains("za")
+    bag_abc.merge(bag_xyz)
+    assert bag_abc.contains("za")
+    assert not bag_abc.contains("aa")
+    bag_abc.merge(bag_dup)
+    assert bag_abc.contains("azaz")
+    assert not bag_abc.contains("aaa")

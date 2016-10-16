@@ -24,5 +24,6 @@ def test_jumbled_pair():
 def test_jumbled_more():
     assert same( jumbled(["aabc", "abac", "bcaa"], 2), "aabc")
 
-    
-
+def test_jumbled_alphabet():
+    alphabet = "abcdefghijklmnopqrstuvwxyz"
+    assert same( jumbled([alphabet, alphabet], 2), alphabet)
