@@ -50,27 +50,51 @@ def index():
   app.logger.debug("At least one seems to be set correctly")
   return flask.render_template('vocab.html')
 
-@app.route("/keep_going")
-def keep_going():
-  """
-  After initial use of index, we keep the same scrambled
-  word and try to get more matches
-  """
-  flask.g.vocab = WORDS.as_list();
-  return flask.render_template('vocab.html')
-  
 
 @app.route("/success")
 def success():
   return flask.render_template('success.html')
 
 #######################
-# Form handler.  
-# CIS 322 (399se) note:
-#   You'll need to change this to a
-#   a JSON request handler
+# AJAX request handlers 
+#   These return JSON, rather than rendering pages. 
 #######################
+@app.route("/_auto_check")
+def auto_check():
+  """
+  User has entered new input, check for
+  the input in the jumble and vocabulary list.
+  Respond depending on whether the word is in the
+  vocab list, made from jumbled letters and not an
+  already found word.
+  """
+  text = request.args.get("text", type=str)
+  jumble = flask.session["jumble"]
+  matches = flask.session.get("matches", []) # Default to empty list
+  in_jumble = LetterBag(jumble).contains(text) #can text be formed from jumble
+  matched = WORDS.has(text) #is text in the word list
+  already_found = text in matches #has text already been found
 
+  ## Respond appropriately 
+  if matched and in_jumble and not already_found:
+    ## they found a new word
+    new_word = True
+    matches.append(text) #add word to list of matches
+    flask.session["matches"] = matches
+  else:
+    ## they didn't find a new word
+    new_word = False
+  
+  done = len(matches) >= flask.session["target_count"] #should the game end 
+  rslt = { "found_word": new_word, "already_found": already_found, "in_jumble": in_jumble, "done": done }   
+  return jsonify(result=rslt)
+
+
+#######################
+# Form handler.  
+# currently unused, it was replaced
+# by a json request handler
+#######################
 @app.route("/_check", methods = ["POST"])
 def check():
   """
@@ -85,6 +109,7 @@ def check():
 
   ## The data we need, from form and from cookie
   text = request.form["attempt"]
+  ## for AJAX: text = request.args.get("text", type=str)
   jumble = flask.session["jumble"]
   matches = flask.session.get("matches", []) # Default to empty list
 
@@ -112,20 +137,6 @@ def check():
     return flask.redirect(url_for("success"))
   else:
     return flask.redirect(url_for("keep_going"))
-
-###############
-# AJAX request handlers 
-#   These return JSON, rather than rendering pages. 
-###############
-
-@app.route("/_example")
-def example():
-  """
-  Example ajax request handler
-  """
-  app.logger.debug("Got a JSON request");
-  rslt = { "key": "value" }
-  return jsonify(result=rslt)
 
 
 #################

@@ -80,35 +80,58 @@
 <br />
 <div class="row">
   <div class="col-xs-6 text-center">
-  <form id="entry" method="POST" action="/_check">
+  <form id="entry">
     <label for="attempt">Word:</label>
     <input id="attempt" name="attempt" type="text" width="15"
       autocomplete="off"  autofocus />
-    <input type="submit" name="try" />
   </form>
-</div></div>
+</div></div> <!-- row -->
 
-<br />
+<p id="response"> </p>
+<p id="answers"> Words found:  </p>
 
-{% if session.matches|length is not equalto 0  %}
-<h2>You found </h2>
-<p id="results">
-  {% for match in session.matches %}
-  {{ match }} 
-  {% endfor %}
-</p>
-{% endif %}
+<script>
 
+//supress normal form submission
+$("#entry").submit( function(envent) {
+    event.preventDefault();
+    });
 
-{% with messages = get_flashed_messages() %}
-  {% if messages %}
-    <!-- Mismatch, already found, etc. "flashed" from Python -->
-    {% for message in messages %}
-      <p class="message">{{ message }}</p>
-    {% endfor %}
-  {% endif %}
-{% endwith %}
+$("#attempt").keyup(function(event) {
+    //trigger this function whenever a key is pressed
+    var success_URL = "{{url_for("success")}}";
+    var txt = $("#attempt").val();
+    var keycode = event.which;
+    var letter = String.fromCharCode(keycode)
+    //only continue if the key corresponds to a letter 
+    if(! "ABCDEFGHIJKLMNOPQRSTUVWXYZ".includes(letter)) {return}
 
+    $.getJSON("_auto_check", { text:txt },
+               //get data from _auto_check in flask_vocab.py 
+               function(data) {
+                 rsval = data.result.found_word;//has a new word been found
+                 already_found = data.result.already_found;//has the word already been found
+                 in_jumble = data.result.in_jumble;//can the word be formed from the jumble
+                 console.log("rsval: " + rsval)
+                 cur_input = $("#attempt").val();//store the word in a variable for easy reference
+		 if (rsval) { //if a new word was found
+                     $("#response").html("You've found " + cur_input + "!");
+                     $("#answers").append( cur_input + " ");
+                     $("#attempt").val("");
+                     //if enough matches have been found, redirect to the success screen
+                     if(data.result.done) { window.location.replace("{{url_for("success")}}"); }
+                 } else if (already_found) {
+                     $("#response").html("You've already found " + cur_input);
+                 } else if (! in_jumble) {
+                     $("#response").html(cur_input + " can't be formed from the jumble");
+                 } else { 
+                     $("#response").html("Keep looking...");
+                 }   
+               }
+             );
+    });
+    
+</script>
 
 
  </div> <!-- container -->
