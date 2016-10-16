@@ -33,8 +33,11 @@ AJAX implementation by Solomon Zook;
 
 ## Settings
 A CONFIG.py file is created during configuration, the number of words that get searched for and vocab list can be changed by editing this file
+	
 	Edit vocab list: change the vocab variable which starts as "data/first_grade.txt" to the filepath of the desired vocab list
+		
 		"third_grade.txt" and "vocab.txt" are also included in the data file
+	
 	Edit number of words: change the success_at_count variable, which defaults to 3, to the desired number
 
 
