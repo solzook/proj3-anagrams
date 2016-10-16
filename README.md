@@ -40,6 +40,8 @@ A CONFIG.py file is created during configuration, the number of words that get s
 	
 	Edit number of words: change the success_at_count variable, which defaults to 3, to the desired number
 
+	Debugging mode can also be turned on by changing the DEBUG variable to 'True', defualt is 'False'
+
 
 ## Testing
 
