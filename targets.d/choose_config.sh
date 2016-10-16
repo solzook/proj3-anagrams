@@ -35,7 +35,7 @@ PORT=${port}
 DEBUG = True  # Set to False for production use
 secret_key="${secret}"
 success_at_count = 3  # How many matches before we declare victory? 
-vocab="data/vocab.txt"  # CHANGE THIS to use another vocabulary file
+vocab="data/first_grade.txt"  # CHANGE THIS to use another vocabulary file
 
 EOF
 }
