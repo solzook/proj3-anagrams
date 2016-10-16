@@ -18,12 +18,17 @@ AJAX implementation by Solomon Zook;
 
 
 ## Setup
-Clone the repository from http://github.com/solzook/proj3-anagrams
-Navigate into the newly created 'proj3-anagrams' directory
-Use 'bash ./configure' to configure the environment
-Use 'make test' to run nosetests, this isn't a required step
-Use 'make run' to start the server (Ctrl + C to quit) using flask's default framework
-Use 'make service' to start the server using gunicorn
+	Clone the repository from http://github.com/solzook/proj3-anagrams
+
+	Navigate into the newly created 'proj3-anagrams' directory
+
+	Use 'bash ./configure' to configure the environment
+
+	Use 'make test' to run nosetests, this isn't a required step
+	
+	Use 'make run' to start the server (Ctrl + C to quit) using flask's default framework
+
+	Use 'make service' to start the server using gunicorn
 
 
 ## Settings
